@@ -6,7 +6,7 @@ namespace PokerProject
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Welcome to Poker game!");
             var card = new Card
             {
 
