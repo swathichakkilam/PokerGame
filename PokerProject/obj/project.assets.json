@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Swathi Karthik\\source\\repos\\PokerProject\\PokerProject\\PokerProject.csproj",
+      "projectUniqueName": "D:\\GitHub\\PokerGame2018\\PokerProject\\PokerProject.csproj",
       "projectName": "PokerProject",
-      "projectPath": "C:\\Users\\Swathi Karthik\\source\\repos\\PokerProject\\PokerProject\\PokerProject.csproj",
+      "projectPath": "D:\\GitHub\\PokerGame2018\\PokerProject\\PokerProject.csproj",
       "packagesPath": "C:\\Users\\Swathi Karthik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Swathi Karthik\\source\\repos\\PokerProject\\PokerProject\\obj\\",
+      "outputPath": "D:\\GitHub\\PokerGame2018\\PokerProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
