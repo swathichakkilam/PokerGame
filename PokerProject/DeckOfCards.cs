@@ -18,6 +18,53 @@ namespace PokerProject
             /*allocating memory space via new keyword in memory 
             for the private array deck and accessing it via Constructor*/
             this.deckofcards = new Card[Numofcards];
+
+           
             }
+        /// <summary>
+        /// To retrieve the deck at the current moment from the array (we do not set it at this point)
+        /// we write a property called getdeck which reads the deck at the current moment
+        /// to give to user and then deck of cards is one card less  when card is given to the system 
+        /// getter reads from a private variable
+        /// as constructor cannot be used to return the value of the private variable
+        /// </summary>
+        public Card[] getdeck { get { return deckofcards; } }
+        /// <summary>
+        /// Populating the array with cards having suit and card value using the method Setdeck
+        /// All cards will be populated in an unshuffled manner
+        /// </summary>
+        public void Setdeck()
+        {
+            int i = 0;
+            foreach (Suit s in Enum.GetValues(typeof(Suit)))
+                {
+                foreach(CardValue v in Enum.GetValues(typeof(CardValue)))
+                {
+                    deckofcards[i] = new Card { suit = s, value = v };
+                    i++;
+                }
+                }
+
+        }
+        /// <summary>
+        /// Method to shuffle the cards by taking inner for loop and 
+        ///using Random function to help shuffle thouroughly
+        /// </summary>
+        public void Shufflecards()
+        {
+            Random rand = new Random();
+            Card temp;
+            for(int numofshuffles =0; numofshuffles <100; numofshuffles++ )
+            {
+                for(int i=0;i<Numofcards;i++)
+                {
+                    //swapping the cards
+                    int secondcrdidx = rand.Next(13);
+                    temp = deckofcards[i];
+                    deckofcards[i] = deckofcards[secondcrdidx];
+                    deckofcards[secondcrdidx] = temp;
+                }
+            }
+        }
     }
 }
