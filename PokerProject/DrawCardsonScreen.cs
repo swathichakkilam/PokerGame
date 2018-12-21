@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PokerProject
 {
@@ -38,19 +41,44 @@ namespace PokerProject
                 
             }
 
-        /// <summary>
-        /// This Method displays the suit and card value inside the 
-        /// borders of the card
-        /// It involves encoding the suit and value for each card in the deck of cards
-        /// </summary>
-        /// <param name="card"></param>
-        /// <param name="xcoordinate"></param>
-        /// <param name="ycoordinate"></param>
-        //public static void DrawCardsuitvalue(Card card,int xcoordinate, int ycoordinate)
-        //{
 
-        //}
+        //displays suit and value of the card inside its outline
+        public static void DrawSuitValue(Card card, int xcoor, int ycoor)
+        {
+            char cardSuit = ' ';
+            int x = xcoor * 12;
+            int y = ycoor;
+
+            //Encode each byte array from the CodePage437 into a character
+            //hears and diamonds are red, clubs and spades are black
+            switch (card.suit)
+            {
+                case Suit.HEARTS:
+                    cardSuit = 'H';
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case Suit.DIAMONDS:
+                    cardSuit = 'D';
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case Suit.CLUBS:
+                    cardSuit = 'C';
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case Suit.SPADES:
+                    cardSuit = 'S';
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+            }
+
+            //display the encoded character and value of the card
+            Console.SetCursorPosition(x + 5, y + 5);
+            Console.Write(cardSuit);
+            Console.SetCursorPosition(x + 4, y + 7);
+            Console.Write(card.value);
+
         }
+    }
 
         
     }

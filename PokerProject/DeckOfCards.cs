@@ -32,18 +32,24 @@ namespace PokerProject
         /// <summary>
         /// Populating the array with cards having suit and card value using the method Setdeck
         /// All cards will be populated in an unshuffled manner
+        /// Enum class consists of a method called GetValues
+        /// which returns an array of values i.e the underlying number or value associated with each field in the particular enum 
         /// </summary>
         public void Setdeck()
         {
             int i = 0;
+            //specifying that the enum is of type Suit enum 
             foreach (Suit s in Enum.GetValues(typeof(Suit)))
                 {
+                //specifying that the enum is of type CardValue enum
                 foreach(CardValue v in Enum.GetValues(typeof(CardValue)))
                 {
                     deckofcards[i] = new Card { suit = s, value = v };
                     i++;
                 }
-                }
+            }
+
+            Shufflecards();
 
         }
         /// <summary>

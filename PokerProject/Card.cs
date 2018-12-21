@@ -21,6 +21,6 @@ namespace PokerProject
     class Card
     {
         public Suit suit { get; set; }
-        private CardValue value { get; set; }
+        public CardValue value { get; set; }
     }
 }
