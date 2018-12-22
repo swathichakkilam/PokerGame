@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PokerProject
 {
@@ -14,13 +12,13 @@ namespace PokerProject
         private Card[] deckofcards;
 
         public DeckOfCards()
-            {
+        {
             /*allocating memory space via new keyword in memory 
             for the private array deck and accessing it via Constructor*/
             this.deckofcards = new Card[Numofcards];
 
-           
-            }
+
+        }
         /// <summary>
         /// To retrieve the deck at the current moment from the array (we do not set it at this point)
         /// we write a property called getdeck which reads the deck at the current moment
@@ -40,9 +38,9 @@ namespace PokerProject
             int i = 0;
             //specifying that the enum is of type Suit enum 
             foreach (Suit s in Enum.GetValues(typeof(Suit)))
-                {
+            {
                 //specifying that the enum is of type CardValue enum
-                foreach(CardValue v in Enum.GetValues(typeof(CardValue)))
+                foreach (CardValue v in Enum.GetValues(typeof(CardValue)))
                 {
                     deckofcards[i] = new Card { suit = s, value = v };
                     i++;
@@ -60,9 +58,9 @@ namespace PokerProject
         {
             Random rand = new Random();
             Card temp;
-            for(int numofshuffles =0; numofshuffles <100; numofshuffles++ )
+            for (int numofshuffles = 0; numofshuffles < 100; numofshuffles++)
             {
-                for(int i=0;i<Numofcards;i++)
+                for (int i = 0; i < Numofcards; i++)
                 {
                     //swapping the cards
                     int secondcrdidx = rand.Next(13);

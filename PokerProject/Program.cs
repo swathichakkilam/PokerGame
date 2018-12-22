@@ -7,7 +7,7 @@ namespace PokerProject
         static void Main(string[] args)
         {
 
-            Console.SetWindowSize(65, 40);
+            Console.SetWindowSize(63, 35);
             // remove scroll bars by setting the buffer to the actual window size
             Console.BufferWidth = 65;
             Console.BufferHeight = 40;
@@ -22,7 +22,7 @@ namespace PokerProject
                 char selection = ' ';
                 while (!selection.Equals('Y') && !selection.Equals('N'))
                 {
-                    Console.WriteLine("Play again? Y-N");
+                    Console.WriteLine("Do you want to try again? Y-N");
                     selection = Convert.ToChar(Console.ReadLine().ToUpper());
 
                     if (selection.Equals('Y'))
@@ -30,7 +30,7 @@ namespace PokerProject
                     else if (selection.Equals('N'))
                         quit = true;
                     else
-                        Console.WriteLine("Invalid Selection. Try again");
+                        Console.WriteLine("Selection is not valid. Please try again.");
                 }
             }
 

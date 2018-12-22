@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PokerProject
+﻿namespace PokerProject
 {
     class PokerHandEvaluator : Card
     {
-        private int heartsSum;
-        private int diamondSum;
-        private int clubSum;
-        private int spadesSum;
+        private int totalHeartsValue;
+        private int totalDiamondValue;
+        private int totalClubValue;
+        private int totalSpadeValue;
         private Card[] cards;
-        private HandValue handValue;
+        private pokerHandValue pokerHandValue;
 
         public PokerHandEvaluator(Card[] sortedHand)
         {
-            heartsSum = 0;
-            diamondSum = 0;
-            clubSum = 0;
-            spadesSum = 0;
+            totalHeartsValue = 0;
+            totalDiamondValue = 0;
+            totalClubValue = 0;
+            totalSpadeValue = 0;
             cards = new Card[5];
             Cards = sortedHand;
-            handValue = new HandValue();
+            pokerHandValue = new pokerHandValue();
         }
 
-        public HandValue HandValues
+        public pokerHandValue pokerHandValues
         {
-            get { return handValue; }
-            set { handValue = value; }
+            get { return pokerHandValue; }
+            set { pokerHandValue = value; }
         }
 
         public Card[] Cards
@@ -43,10 +39,14 @@ namespace PokerProject
             }
         }
 
+        /// <summary>
+        /// Evaluates Poker Hand, which gives us the best combination based  on the card values and suits.
+        /// </summary>
+        /// <returns>One of the PokerHands or nothing.</returns>
         public PokerHand EvaluatePokerHand()
         {
             //get the number of each suit on hand
-            getNumberOfSuit();
+            computeSuitTotals();
             if (FourOfKind())
                 return PokerHand.FourKind;
             else if (FullHouse())
@@ -63,44 +63,56 @@ namespace PokerProject
                 return PokerHand.OnePair;
 
             //if the hand is nothing, than the player with highest card wins
-            handValue.HighCard = (int)cards[4].value;
+            pokerHandValue.HighCard = (int)cards[4].value;
             return PokerHand.Nothing;
         }
 
-        private void getNumberOfSuit()
+        /// <summary>
+        /// Computes the total value of different suits.
+        /// </summary>
+        private void computeSuitTotals()
         {
-            foreach (var element in Cards)
+            foreach (var card in Cards)
             {
-                if (element.suit == Suit.HEARTS)
-                    heartsSum++;
-                else if (element.suit == Suit.DIAMONDS)
-                    diamondSum++;
-                else if (element.suit == Suit.CLUBS)
-                    clubSum++;
-                else if (element.suit == Suit.SPADES)
-                    spadesSum++;
+                if (card.suit == Suit.HEARTS)
+                    totalHeartsValue++;
+                else if (card.suit == Suit.DIAMONDS)
+                    totalDiamondValue++;
+                else if (card.suit == Suit.CLUBS)
+                    totalClubValue++;
+                else if (card.suit == Suit.SPADES)
+                    totalSpadeValue++;
             }
         }
 
+        /// <summary>
+        /// Check if the hand is a four of a kind
+        /// </summary>
+        /// <returns>True if four of a kind.</returns>
         private bool FourOfKind()
         {
             //if the first 4 cards, add values of the four cards and last card is the highest
             if (cards[0].value == cards[1].value && cards[0].value == cards[2].value && cards[0].value == cards[3].value)
             {
-                handValue.Total = (int)cards[1].value * 4;
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[1].value * 4;
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[1].value == cards[2].value && cards[1].value == cards[3].value && cards[1].value == cards[4].value)
             {
-                handValue.Total = (int)cards[1].value * 4;
-                handValue.HighCard = (int)cards[0].value;
+                pokerHandValue.Total = (int)cards[1].value * 4;
+                pokerHandValue.HighCard = (int)cards[0].value;
                 return true;
             }
 
             return false;
         }
 
+
+        /// <summary>
+        /// Check if the hand is Full House
+        /// </summary>
+        /// <returns>True if full house.</returns>
         private bool FullHouse()
         {
             //the first three cars and last two cards are of the same value
@@ -108,7 +120,7 @@ namespace PokerProject
             if ((cards[0].value == cards[1].value && cards[0].value == cards[2].value && cards[3].value == cards[4].value) ||
                 (cards[0].value == cards[1].value && cards[2].value == cards[3].value && cards[2].value == cards[4].value))
             {
-                handValue.Total = (int)(cards[0].value) + (int)(cards[1].value) + (int)(cards[2].value) +
+                pokerHandValue.Total = (int)(cards[0].value) + (int)(cards[1].value) + (int)(cards[2].value) +
                     (int)(cards[3].value) + (int)(cards[4].value);
                 return true;
             }
@@ -116,20 +128,29 @@ namespace PokerProject
             return false;
         }
 
+        /// <summary>
+        /// Check if the hand is flush.
+        /// </summary>
+        /// <returns>True if flush.</returns>
         private bool Flush()
         {
             //if all suits are the same
-            if (heartsSum == 5 || diamondSum == 5 || clubSum == 5 || spadesSum == 5)
+            if (totalHeartsValue == 5 || totalDiamondValue == 5 || totalClubValue == 5 || totalSpadeValue == 5)
             {
                 //if flush, the player with higher cards win
                 //whoever has the last card the highest, has automatically all the cards total higher
-                handValue.Total = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[4].value;
                 return true;
             }
 
             return false;
         }
 
+
+        /// <summary>
+        /// Check if the hand is straight.
+        /// </summary>
+        /// <returns>True if straight.</returns>
         private bool Straight()
         {
             //if 5 consecutive values
@@ -139,13 +160,17 @@ namespace PokerProject
                 cards[3].value + 1 == cards[4].value)
             {
                 //player with the highest value of the last card wins
-                handValue.Total = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[4].value;
                 return true;
             }
 
             return false;
         }
 
+        /// <summary>
+        /// Check if the hand is threeofkind.
+        /// </summary>
+        /// <returns>True if three of a kind.</returns>
         private bool ThreeOfKind()
         {
             //if the 1,2,3 cards are the same OR
@@ -155,19 +180,23 @@ namespace PokerProject
             if ((cards[0].value == cards[1].value && cards[0].value == cards[2].value) ||
             (cards[1].value == cards[2].value && cards[1].value == cards[3].value))
             {
-                handValue.Total = (int)cards[2].value * 3;
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[2].value * 3;
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[2].value == cards[3].value && cards[2].value == cards[4].value)
             {
-                handValue.Total = (int)cards[2].value * 3;
-                handValue.HighCard = (int)cards[1].value;
+                pokerHandValue.Total = (int)cards[2].value * 3;
+                pokerHandValue.HighCard = (int)cards[1].value;
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// Check if the hand is two pairs.
+        /// </summary>
+        /// <returns>True if two pairs.</returns>
         private bool TwoPairs()
         {
             //if 1,2 and 3,4
@@ -177,25 +206,30 @@ namespace PokerProject
             //and 4th card will always be a part of second pair
             if (cards[0].value == cards[1].value && cards[2].value == cards[3].value)
             {
-                handValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[0].value == cards[1].value && cards[3].value == cards[4].value)
             {
-                handValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
-                handValue.HighCard = (int)cards[2].value;
+                pokerHandValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
+                pokerHandValue.HighCard = (int)cards[2].value;
                 return true;
             }
             else if (cards[1].value == cards[2].value && cards[3].value == cards[4].value)
             {
-                handValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
-                handValue.HighCard = (int)cards[0].value;
+                pokerHandValue.Total = ((int)cards[1].value * 2) + ((int)cards[3].value * 2);
+                pokerHandValue.HighCard = (int)cards[0].value;
                 return true;
             }
             return false;
         }
 
+
+        /// <summary>
+        /// CHeck if the hand has one pair.
+        /// </summary>
+        /// <returns>True if the hand has a pair.</returns>
         private bool OnePair()
         {
             //if 1,2 -> 5th card has the highest value
@@ -204,26 +238,26 @@ namespace PokerProject
             //4,5 -> card #3 has the highest value
             if (cards[0].value == cards[1].value)
             {
-                handValue.Total = (int)cards[0].value * 2;
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[0].value * 2;
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[1].value == cards[2].value)
             {
-                handValue.Total = (int)cards[1].value * 2;
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[1].value * 2;
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[2].value == cards[3].value)
             {
-                handValue.Total = (int)cards[2].value * 2;
-                handValue.HighCard = (int)cards[4].value;
+                pokerHandValue.Total = (int)cards[2].value * 2;
+                pokerHandValue.HighCard = (int)cards[4].value;
                 return true;
             }
             else if (cards[3].value == cards[4].value)
             {
-                handValue.Total = (int)cards[3].value * 2;
-                handValue.HighCard = (int)cards[2].value;
+                pokerHandValue.Total = (int)cards[3].value * 2;
+                pokerHandValue.HighCard = (int)cards[2].value;
                 return true;
             }
 

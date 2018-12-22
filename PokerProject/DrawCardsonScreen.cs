@@ -21,7 +21,7 @@ namespace PokerProject
             Console.ForegroundColor = ConsoleColor.White;
             /*in order to draw each card without overlapping side by side multiplying
             xcoordinate by 12 hence x2 starts 12 points after first card creation on the screen*/
-            int x = xcoordinate * 12;  
+            int x = xcoordinate * 12;
             int y = ycoordinate;
             //trying to set the position of the card at the top left position on the screen
             Console.SetCursorPosition(x, y);
@@ -34,12 +34,12 @@ namespace PokerProject
                 else
                     //bottom edge of the card illustration on screen
                     Console.WriteLine("|__________|");
-            
-            }
-              
 
-                
             }
+
+
+
+        }
 
 
         //displays suit and value of the card inside its outline
@@ -80,6 +80,6 @@ namespace PokerProject
         }
     }
 
-        
-    }
+
+}
 

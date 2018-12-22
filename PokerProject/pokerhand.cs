@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PokerProject
+﻿namespace PokerProject
 {
     public enum PokerHand
     {
@@ -16,8 +12,7 @@ namespace PokerProject
         FourKind
     }
 
-
-    public struct HandValue
+    public struct pokerHandValue
     {
         public int Total { get; set; }
         public int HighCard { get; set; }

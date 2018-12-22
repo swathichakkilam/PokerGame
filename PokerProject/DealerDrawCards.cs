@@ -1,140 +1,143 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PokerProject
 {
-    class DealerDrawCards: DeckOfCards
+    class DealerDrawCards : DeckOfCards
     {
-        private Card[] playerHand;
-        private Card[] computerHand;
-        private Card[] sortedPlayerHand;
-        private Card[] sortedComputerHand;
+        private Card[] playersHandCards;
+        private Card[] computersHandCards;
+        private Card[] sortedPlayersHandCards;
+        private Card[] sortedComputersHandCards;
 
         public DealerDrawCards()
         {
-            playerHand = new Card[5];
-            sortedPlayerHand = new Card[5];
-            computerHand = new Card[5];
-            sortedComputerHand = new Card[5];
+            playersHandCards = new Card[5];
+            sortedPlayersHandCards = new Card[5];
+            computersHandCards = new Card[5];
+            sortedComputersHandCards = new Card[5];
         }
 
+        /// <summary>
+        /// Distribute the cards, and evaluates the hands between player and the computer
+        /// </summary>
         public void Deal()
         {
-            Setdeck(); //create the deck of cards and shuffle them
-            getHand();
-            sortCards();
-            displayCards();
-            evaluateHands();
+            Setdeck(); //Creates a new deck of cards, and shuffles the cards.
+            DistributeCards(); // Distributes the cards to both the player and computer.
+            ArrangeCards(); // Sorts the cards for evaluation.
+            DisplayHands(); // Displays the cards on screen.
+            EvaluateAndJudge(); // Evaluates the players and computers hand and decides the winner.
         }
 
-        public void getHand()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DistributeCards()
         {
             //5 cards for the player
             for (int i = 0; i < 5; i++)
-                playerHand[i] = getdeck[i];
+                playersHandCards[i] = getdeck[i];
 
             //5 cards for the computer
             for (int i = 5; i < 10; i++)
-                computerHand[i - 5] = getdeck[i];
+                computersHandCards[i - 5] = getdeck[i];
         }
         /// <summary>
         /// Method to sort the cards based on low to high ranks
         /// using LINQ and built in function such as OrderBy
         /// </summary>
-        public void sortCards()
+        public void ArrangeCards()
         {
-            var queryPlayer = playerHand.OrderBy(item => item.value).ToList();
+            var queryPlayer = playersHandCards.OrderBy(item => item.value).ToList();
 
-            var queryComputer = computerHand.OrderBy(item => item.value).ToList();
+            var queryComputer = computersHandCards.OrderBy(item => item.value).ToList();
 
             var index = 0;
             foreach (var element in queryPlayer)
             {
-                sortedPlayerHand[index] = element;
+                sortedPlayersHandCards[index] = element;
                 index++;
             }
 
             index = 0;
             foreach (var element in queryComputer)
             {
-                sortedComputerHand[index] = element;
+                sortedComputersHandCards[index] = element;
                 index++;
             }
         }
         /// <summary>
-        /// method to display cards in an order based on co-ordinates 
+        /// Method to display cards in an order based on co-ordinates 
         /// </summary>
-        public void displayCards()
+        public void DisplayHands()
         {
             Console.Clear();
-            int x = 0; //x position of the cursor. We move it left and right
-            int y = 1;//y position of the cursor, we move up and down
+            int x = 0;
+            int y = 1;
 
-            //display player hand
+
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("PLAYER'S HAND");
+            Console.WriteLine("PLAYER'S POKER HAND");
             for (int i = 0; i < 5; i++)
             {
                 DrawCardsonScreen.Cardillustration(x, y);
-                DrawCardsonScreen.DrawSuitValue(sortedPlayerHand[i], x, y);
-                x++;//move to the right
+                DrawCardsonScreen.DrawSuitValue(sortedPlayersHandCards[i], x, y);
+                x++;
             }
-            y = 15; //move the row of computer cards below the player's cards
-            x = 0; //reset x position
+            y = 15;
+            x = 0;
             Console.SetCursorPosition(x, 14);
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("COMPUTER'S HAND");
+            Console.WriteLine("COMPUTER'S POKER HAND");
             for (int i = 5; i < 10; i++)
             {
                 DrawCardsonScreen.Cardillustration(x, y);
-                DrawCardsonScreen.DrawSuitValue(sortedComputerHand[i - 5], x, y);
-                x++;//move to the right
+                DrawCardsonScreen.DrawSuitValue(sortedComputersHandCards[i - 5], x, y);
+                x++;
             }
 
         }
         /// <summary>
         /// Trying to create players and computers hand objects
-        /// Mthod to get the player and computers hand
+        /// Method to get the player and computers hand
         /// </summary>
-        public void evaluateHands()
+        public void EvaluateAndJudge()
         {
-           
-            PokerHandEvaluator playerHandEvaluator = new PokerHandEvaluator(sortedPlayerHand);
-            PokerHandEvaluator computerHandEvaluator = new PokerHandEvaluator(sortedComputerHand);
 
-            
-            PokerHand playerHand = playerHandEvaluator.EvaluatePokerHand();
-            PokerHand computerHand = computerHandEvaluator.EvaluatePokerHand();
+            PokerHandEvaluator playersHandCardsEvaluator = new PokerHandEvaluator(sortedPlayersHandCards);
+            PokerHandEvaluator computersHandCardsEvaluator = new PokerHandEvaluator(sortedComputersHandCards);
 
-            //display each hand
-            Console.WriteLine("\n\n\n\n\nPlayer's Hand: " + playerHand);
-            Console.WriteLine("\nComputer's Hand: " + computerHand);
 
-            //evaluate hands
-            if (playerHand > computerHand)
+            PokerHand playersHandCards = playersHandCardsEvaluator.EvaluatePokerHand();
+            PokerHand computersHandCards = computersHandCardsEvaluator.EvaluatePokerHand();
+
+
+            Console.WriteLine("\n\n\n\n\nPlayer's Hand: " + playersHandCards);
+            Console.WriteLine("\nComputer's Hand: " + computersHandCards);
+
+
+            if (playersHandCards > computersHandCards)
             {
-                Console.WriteLine("Player WINS!");
+                Console.WriteLine("Player Hand WINS!");
             }
-            else if (playerHand < computerHand)
+            else if (playersHandCards < computersHandCards)
             {
-                Console.WriteLine("Computer WINS!");
+                Console.WriteLine("Computer Hand WINS!");
             }
-            else //if the hands are the same, evaluate the values
+            else
             {
-                if (playerHandEvaluator.HandValues.Total > computerHandEvaluator.HandValues.Total)
-                    Console.WriteLine("Player WINS!");
-                else if (playerHandEvaluator.HandValues.Total < computerHandEvaluator.HandValues.Total)
-                    Console.WriteLine("Computer WINS!");
-                //if both have the same poker hand (for example, both have a pair of queens), 
-                //then the player with the next higher card wins
-                else if (playerHandEvaluator.HandValues.HighCard > computerHandEvaluator.HandValues.HighCard)
-                    Console.WriteLine("Player WINS!");
-                else if (playerHandEvaluator.HandValues.HighCard < computerHandEvaluator.HandValues.HighCard)
-                    Console.WriteLine("Computer WINS!");
+                if (playersHandCardsEvaluator.pokerHandValues.Total > computersHandCardsEvaluator.pokerHandValues.Total)
+                    Console.WriteLine("Player Hand WINS!");
+                else if (playersHandCardsEvaluator.pokerHandValues.Total < computersHandCardsEvaluator.pokerHandValues.Total)
+                    Console.WriteLine("Computer Hand WINS!");
+                //if both player and computer have the same poker hand then the player with the next higher card wins
+                else if (playersHandCardsEvaluator.pokerHandValues.HighCard > computersHandCardsEvaluator.pokerHandValues.HighCard)
+                    Console.WriteLine("Player Hand WINS!");
+                else if (playersHandCardsEvaluator.pokerHandValues.HighCard < computersHandCardsEvaluator.pokerHandValues.HighCard)
+                    Console.WriteLine("Computer Hand WINS!");
                 else
-                    Console.WriteLine("DRAW, no one wins!");
+                    Console.WriteLine("No one wins!");
             }
         }
     }
